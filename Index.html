@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurum Management - Premium OFM Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --gold:#C9A84C; --gold-light:#E8C96A; --black:#080808; --black-2:#111111; --black-3:#1A1A1A; --white:#F5F0E8; --gray:#666660; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Montserrat',sans-serif; font-weight:300; overflow-x:hidden; }
+  nav { position:fixed; top:0; width:100%; padding:16px 40px; display:flex; justify-content:space-between; align-items:center; z-index:100; background:rgba(8,8,8,0.97); border-bottom:1px solid rgba(201,168,76,0.15); }
+  .nav-logo { font-family:'Cormorant Garamond',serif; font-size:20px; letter-spacing:4px; color:var(--gold); text-transform:uppercase; text-decoration:none; }
+  .nav-links { display:flex; gap:28px; align-items:center; }
+  .nav-link { font-size:10px; letter-spacing:2px; color:var(--gray); text-transform:uppercase; text-decoration:none; transition:color 0.3s; }
+  .nav-link:hover { color:var(--gold); }
+  .nav-cta { background:transparent; border:1px solid var(--gold); color:var(--gold); padding:9px 22px; font-family:'Montserrat',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all 0.3s; text-decoration:none; }
+  .nav-cta:hover { background:var(--gold); color:var(--black); }
+  .burger { display:none; font-size:12px; letter-spacing:2px; color:var(--gold); cursor:pointer; background:none; border:1px solid rgba(201,168,76,0.3); padding:6px 12px; font-family:'Montserrat',sans-serif; text-transform:uppercase; }
+  .mobile-menu { display:none; position:fixed; top:57px; left:0; width:100%; background:rgba(8,8,8,0.99); border-bottom:1px solid rgba(201,168,76,0.1); z-index:99; flex-direction:column; padding:10px 0; }
+  .mobile-menu.open { display:flex; }
+  .mobile-link { font-size:11px; letter-spacing:3px; color:var(--gray); text-transform:uppercase; text-decoration:none; padding:14px 30px; border-bottom:1px solid rgba(255,255,255,0.04); transition:color 0.3s; }
+  .mobile-link:hover { color:var(--gold); }
+  .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:100px 40px 60px; position:relative; }
+  .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(201,168,76,0.08) 0%,transparent 70%); }
+  .hero-tag { font-size:10px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; margin-bottom:30px; opacity:0; animation:fadeUp 1s ease 0.2s forwards; }
+  .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(52px,10vw,110px); font-weight:300; line-height:0.9; letter-spacing:-2px; margin-bottom:30px; opacity:0; animation:fadeUp 1s ease 0.4s forwards; }
+  .hero-title em { font-style:italic; color:var(--gold); }
+  .hero-sub { font-size:13px; letter-spacing:1px; color:var(--gray); max-width:480px; line-height:2; margin-bottom:50px; opacity:0; animation:fadeUp 1s ease 0.6s forwards; }
+  .hero-btn { background:var(--gold); color:var(--black); padding:16px 48px; font-family:'Montserrat',sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; font-weight:600; cursor:pointer; border:none; text-decoration:none; display:inline-block; transition:all 0.3s; opacity:0; animation:fadeUp 1s ease 0.8s forwards; }
+  .hero-btn:hover { background:var(--gold-light); transform:translateY(-2px); }
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid rgba(201,168,76,0.15); border-bottom:1px solid rgba(201,168,76,0.15); }
+  .stat { padding:50px 40px; text-align:center; border-right:1px solid rgba(201,168,76,0.15); }
+  .stat:last-child { border-right:none; }
+  .stat-num { font-family:'Cormorant Garamond',serif; font-size:56px; font-weight:300; color:var(--gold); line-height:1; margin-bottom:10px; }
+  .stat-label { font-size:10px; letter-spacing:3px; color:var(--gray); text-transform:uppercase; }
+  section { padding:100px 40px; max-width:1100px; margin:0 auto; }
+  .section-tag { font-size:10px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; margin-bottom:20px; }
+  .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,5vw,60px); font-weight:300; line-height:1.1; margin-bottom:20px; }
+  .section-title em { font-style:italic; color:var(--gold); }
+  .section-desc { font-size:13px; color:var(--gray); line-height:2.2; max-width:540px; margin-bottom:60px; }
+  .divider { width:100%; height:1px; background:linear-gradient(to right,transparent,rgba(201,168,76,0.3),transparent); }
+  .services-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2px; background:rgba(201,168,76,0.1); }
+  .service-card { background:var(--black-2); padding:48px 40px; transition:background 0.3s; }
+  .service-card:hover { background:var(--black-3); }
+  .service-icon { font-size:28px; margin-bottom:20px; }
+  .service-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:400; color:var(--white); margin-bottom:12px; }
+  .service-desc { font-size:12px; color:var(--gray); line-height:2; }
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:40px; margin-top:60px; }
+  .step { position:relative; padding-top:20px; }
+  .step::before { content:''; position:absolute; top:0; left:0; width:40px; height:1px; background:var(--gold); }
+  .step-num { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:300; color:rgba(201,168,76,0.12); line-height:1; margin-bottom:10px; }
+  .step-title { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--white); margin-bottom:12px; }
+  .step-desc { font-size:12px; color:var(--gray); line-height:2; }
+  .form-section { background:var(--black-2); padding:100px 40px; }
+  .form-inner { max-width:780px; margin:0 auto; }
+  .form-title { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,5vw,60px); font-weight:300; text-align:center; margin-bottom:10px; }
+  .form-title em { font-style:italic; color:var(--gold); }
+  .form-subtitle { text-align:center; font-size:12px; color:var(--gray); letter-spacing:2px; margin-bottom:60px; }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .form-group { display:flex; flex-direction:column; gap:10px; }
+  .form-group.full { grid-column:1 / -1; }
+  .form-label { font-size:10px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; }
+  .form-input,.form-select,.form-textarea { background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.2); color:var(--white); padding:14px 18px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:300; outline:none; transition:border 0.3s; -webkit-appearance:none; appearance:none; width:100%; }
+  .form-select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center; background-color:rgba(255,255,255,0.03); padding-right:40px; cursor:pointer; }
+  .form-select option { background:#111; color:var(--white); }
+  .form-textarea { resize:vertical; min-height:100px; }
+  .form-input:focus,.form-select:focus,.form-textarea:focus { border-color:var(--gold); background:rgba(201,168,76,0.04); }
+  .form-input::placeholder,.form-textarea::placeholder { color:rgba(255,255,255,0.2); font-size:12px; }
+  .checkbox-group { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:4px; }
+  .checkbox-item { display:flex; align-items:center; gap:10px; cursor:pointer; }
+  .checkbox-item input[type="checkbox"] { width:16px; height:16px; border:1px solid rgba(201,168,76,0.4); background:transparent; appearance:none; -webkit-appearance:none; cursor:pointer; position:relative; flex-shrink:0; }
+  .checkbox-item input[type="checkbox"]:checked { background:var(--gold); border-color:var(--gold); }
+  .checkbox-item input[type="checkbox"]:checked::after { content:'v'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:10px; color:var(--black); font-weight:bold; }
+  .checkbox-label { font-size:12px; color:var(--white); }
+  .form-submit { margin-top:40px; text-align:center; }
+  .submit-btn { background:var(--gold); color:var(--black); border:none; padding:18px 64px; font-family:'Montserrat',sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; font-weight:600; cursor:pointer; transition:all 0.3s; width:100%; max-width:360px; }
+  .submit-btn:hover { background:var(--gold-light); transform:translateY(-2px); }
+  .form-note { margin-top:16px; font-size:11px; color:var(--gray); letter-spacing:1px; }
+  .success-msg { display:none; text-align:center; padding:60px 40px; border:1px solid rgba(201,168,76,0.3); background:rgba(201,168,76,0.05); }
+  .success-msg.show { display:block; }
+  .success-msg h3 { font-family:'Cormorant Garamond',serif; font-size:40px; color:var(--gold); margin-bottom:16px; }
+  .success-msg p { font-size:13px; color:var(--gray); line-height:2.2; }
+  .contact-section { background:var(--black); padding:100px 40px; text-align:center; border-top:1px solid rgba(201,168,76,0.1); }
+  .contact-inner { max-width:700px; margin:0 auto; }
+  .contact-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:50px; }
+  .contact-card { text-decoration:none; background:var(--black-2); border:1px solid rgba(201,168,76,0.2); padding:30px 20px; display:flex; flex-direction:column; align-items:center; gap:12px; transition:border-color 0.3s; }
+  .contact-card:hover { border-color:var(--gold); }
+  .contact-name { font-size:10px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; }
+  .contact-handle { font-size:12px; color:var(--gray); }
+  footer { background:var(--black); border-top:1px solid rgba(201,168,76,0.1); padding:40px; text-align:center; }
+  .footer-logo { font-family:'Cormorant Garamond',serif; font-size:20px; letter-spacing:6px; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+  .footer-links { display:flex; justify-content:center; gap:30px; margin-bottom:20px; }
+  .footer-links a { font-size:11px; letter-spacing:2px; color:var(--gray); text-decoration:none; text-transform:uppercase; transition:color 0.3s; }
+  .footer-links a:hover { color:var(--gold); }
+  .footer-copy { font-size:10px; color:rgba(255,255,255,0.15); letter-spacing:2px; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+  @media (max-width:900px) { .nav-links { display:none; } .burger { display:block; } }
+  @media (max-width:768px) { nav { padding:16px 20px; } section { padding:70px 20px; } .stats { grid-template-columns:1fr; } .stat { border-right:none; border-bottom:1px solid rgba(201,168,76,0.15); } .services-grid { grid-template-columns:1fr; } .steps { grid-template-columns:1fr; gap:30px; } .form-grid { grid-template-columns:1fr; } .form-group.full { grid-column:1; } .checkbox-group { grid-template-columns:repeat(2,1fr); } .form-section,.contact-section { padding:70px 20px; } .hero { padding:100px 20px 60px; } .contact-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <a href="#accueil" class="nav-logo">Aurum</a>
+  <div class="nav-links">
+    <a href="#accueil" class="nav-link">Accueil</a>
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#fonctionnement" class="nav-link">Comment ca marche</a>
+    <a href="#candidature" class="nav-link">Candidature</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </div>
+  <a href="#candidature" class="nav-cta">Postuler</a>
+  <button class="burger" onclick="toggleMenu()">MENU</button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#accueil" class="mobile-link" onclick="toggleMenu()">Accueil</a>
+  <a href="#services" class="mobile-link" onclick="toggleMenu()">Services</a>
+  <a href="#fonctionnement" class="mobile-link" onclick="toggleMenu()">Comment ca marche</a>
+  <a href="#candidature" class="mobile-link" onclick="toggleMenu()">Candidature</a>
+  <a href="#contact" class="mobile-link" onclick="toggleMenu()">Contact</a>
+</div>
+<div class="hero" id="accueil">
+  <div class="hero-tag">Premium OnlyFans Management Agency</div>
+  <h1 class="hero-title">Tu crees.<br><em>Nous gerons.</em></h1>
+  <p class="hero-sub">Aurum Management propulse les creatrices vers de nouveaux sommets. Marketing, chatting, strategie — on s'occupe de tout.</p>
+  <a href="#candidature" class="hero-btn">Rejoindre l'agence</a>
+</div>
+<div class="stats">
+  <div class="stat"><div class="stat-num" style="font-size:32px;padding-top:12px;">Des J+7</div><div class="stat-label">Resultats visibles la 1ere semaine</div></div>
+  <div class="stat"><div class="stat-num">60%</div><div class="stat-label">Tu gardes 60% de chaque euro gagne</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Presence continue pour toi et tes abonnes</div></div>
+</div>
+<section id="services">
+  <div class="section-tag">Nos services</div>
+  <h2 class="section-title">Tout ce dont tu<br>as <em>besoin</em></h2>
+  <p class="section-desc">On prend en charge l'integralite de ta gestion pour que tu puisses te concentrer sur ce que tu fais le mieux : creer du contenu.</p>
+  <div class="services-grid">
+    <div class="service-card"><div class="service-icon">&#128172;</div><div class="service-title">Chatting Premium</div><div class="service-desc">Notre equipe gere tes interactions avec les abonnes 24h/24. Relances, upsells, fidelisation — on maximise chaque conversation.</div></div>
+    <div class="service-card"><div class="service-icon">&#128200;</div><div class="service-title">Marketing & Croissance</div><div class="service-desc">Strategie sur Twitter/X, Reddit, TikTok et Instagram. On attire de nouveaux abonnes qualifies chaque semaine.</div></div>
+    <div class="service-card"><div class="service-icon">&#128161;</div><div class="service-title">Strategie de Contenu</div><div class="service-desc">Calendrier editorial, optimisation des PPV, tarification — on analyse et optimise chaque levier de revenus.</div></div>
+    <div class="service-card"><div class="service-icon">&#128202;</div><div class="service-title">Reporting Mensuel</div><div class="service-desc">Tableau de bord complet chaque mois : revenus, croissance, abonnes, performance. Tu sais exactement ou tu en es.</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+<section id="fonctionnement">
+  <div class="section-tag">Comment ca marche</div>
+  <h2 class="section-title">Simple.<br><em>Efficace.</em></h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><div class="step-title">Tu postules</div><div class="step-desc">Remplis le formulaire ci-dessous. On analyse ton profil et on te repond sous 24h via Telegram.</div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-title">On s'organise</div><div class="step-desc">Appel de presentation, signature du contrat, acces aux comptes. On met tout en place ensemble.</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-title">On performe</div><div class="step-desc">L'agence prend les renes. Tu crees, on gere. Tes revenus augmentent des les premieres semaines.</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+<div class="form-section" id="candidature">
+  <div class="form-inner">
+    <div class="section-tag" style="text-align:center;margin-bottom:16px;">Candidature</div>
+    <h2 class="form-title">Rejoins <em>Aurum</em></h2>
+    <p class="form-subtitle">Complete le formulaire — nous te repondons sous 24h</p>
+    <div id="formContainer">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Prenom *</label><input type="text" class="form-input" id="prenom" placeholder="Ton prenom"></div>
+        <div class="form-group"><label class="form-label">Age *</label><input type="number" class="form-input" id="age" placeholder="Ton age" min="18"></div>
+        <div class="form-group full"><label class="form-label">Plateforme(s) utilisee(s) *</label><div class="checkbox-group"><label class="checkbox-item"><input type="checkbox" value="OnlyFans"><span class="checkbox-label">OnlyFans</span></label><label class="checkbox-item"><input type="checkbox" value="MYM"><span class="checkbox-label">MYM</span></label><label class="checkbox-item"><input type="checkbox" value="Fansly"><span class="checkbox-label">Fansly</span></label><label class="checkbox-item"><input type="checkbox" value="Aucun"><span class="checkbox-label">Pas encore de compte</span></label></div></div>
+        <div class="form-group"><label class="form-label">Chiffre d'affaires actuel</label><select class="form-select" id="ca"><option value="" disabled selected>Selectionne une tranche</option><option>Pas encore de revenus</option><option>Moins de 500 euros/mois</option><option>500 - 1000 euros/mois</option><option>1000 - 3000 euros/mois</option><option>3000 - 5000 euros/mois</option><option>Plus de 5000 euros/mois</option></select></div>
+        <div class="form-group"><label class="form-label">Anciennete sur la plateforme</label><select class="form-select" id="anciennete"><option value="" disabled selected>Depuis combien de temps ?</option><option>Je demarre</option><option>Moins de 3 mois</option><option>3 a 6 mois</option><option>6 mois a 1 an</option><option>Plus d'1 an</option></select></div>
+        <div class="form-group full"><label class="form-label">Reseaux sociaux disponibles *</label><div class="checkbox-group"><label class="checkbox-item"><input type="checkbox" value="Twitter/X"><span class="checkbox-label">Twitter / X</span></label><label class="checkbox-item"><input type="checkbox" value="TikTok"><span class="checkbox-label">TikTok</span></label><label class="checkbox-item"><input type="checkbox" value="Instagram"><span class="checkbox-label">Instagram</span></label><label class="checkbox-item"><input type="checkbox" value="Snapchat"><span class="checkbox-label">Snapchat</span></label><label class="checkbox-item"><input type="checkbox" value="Reddit"><span class="checkbox-label">Reddit</span></label><label class="checkbox-item"><input type="checkbox" value="Aucun"><span class="checkbox-label">Aucun</span></label></div></div>
+        <div class="form-group"><label class="form-label">Type de telephone *</label><select class="form-select" id="telephone"><option value="" disabled selected>Ton appareil</option><option>iPhone</option><option>Android</option><option>Les deux</option></select></div>
+        <div class="form-group"><label class="form-label">Disponibilite par semaine *</label><select class="form-select" id="dispo"><option value="" disabled selected>Combien d'heures ?</option><option>Moins de 10h/semaine</option><option>10 a 20h/semaine</option><option>20 a 30h/semaine</option><option>Plus de 30h/semaine</option><option>Disponible a temps plein</option></select></div>
+        <div class="form-group full"><label class="form-label">Objectif de revenus mensuel</label><select class="form-select" id="objectif"><option value="" disabled selected>Ton objectif</option><option>1000 euros/mois</option><option>2000 - 5000 euros/mois</option><option>5000 - 10000 euros/mois</option><option>Plus de 10000 euros/mois</option></select></div>
+        <div class="form-group full"><label class="form-label">Ton Telegram *</label><input type="text" class="form-input" id="telegram" placeholder="@tonpseudo"></div>
+        <div class="form-group full"><label class="form-label">Presente-toi en quelques mots</label><textarea class="form-textarea" id="message" placeholder="Parle-nous un peu de toi, de ton contenu, de tes ambitions..."></textarea></div>
+      </div>
+      <div class="form-submit">
+        <button class="submit-btn" onclick="submitForm()">Envoyer ma candidature</button>
+        <p class="form-note">Reponse garantie sous 24h via Telegram</p>
+      </div>
+    </div>
+    <div class="success-msg" id="successMsg"><h3>Candidature recue !</h3><p>Merci pour ta candidature.<br>Notre equipe te contactera sur Telegram dans les prochaines 24h.<br><br>Bienvenue dans l'univers Aurum.</p></div>
+  </div>
+</div>
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="section-tag" style="display:block;margin-bottom:20px;">Contact</div>
+    <h2 class="section-title" style="font-family:'Cormorant Garamond',serif;">Une <em>question</em> ?</h2>
+    <p class="section-desc" style="margin:16px auto 0;text-align:center;">Notre equipe est disponible pour repondre a toutes tes questions.</p>
+    <div class="contact-grid">
+      <a href="https://t.me/aurummgmt" target="_blank" class="contact-card"><span class="contact-name">Telegram</span><span class="contact-handle">@aurummgmt</span></a>
+      <a href="https://twitter.com/aurummgmt" target="_blank" class="contact-card"><span class="contact-name">Twitter / X</span><span class="contact-handle">@aurummgmt</span></a>
+      <a href="mailto:team.aurum.mgmt@gmail.com" class="contact-card"><span class="contact-name">Email</span><span class="contact-handle">team.aurum.mgmt@gmail.com</span></a>
+    </div>
+    <p style="margin-top:40px;font-size:11px;color:var(--gray);letter-spacing:2px;">Reponse garantie sous 24h</p>
+  </div>
+</div>
+<footer>
+  <div class="footer-logo">Aurum Management</div>
+  <div class="footer-links"><a href="https://twitter.com/aurummgmt" target="_blank">Twitter / X</a><a href="https://t.me/aurummgmt" target="_blank">Telegram</a></div>
+  <div class="footer-copy">2026 Aurum Management - Tous droits reserves</div>
+</footer>
+<script>
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  function submitForm() {
+    var prenom = document.getElementById('prenom').value.trim();
+    var telegram = document.getElementById('telegram').value.trim();
+    if (!prenom || !telegram) { alert('Merci de remplir au minimum ton prenom et ton Telegram.'); return; }
+    document.getElementById('formContainer').style.display = 'none';
+    document.getElementById('successMsg').classList.add('show');
+    window.scrollTo({ top: document.getElementById('candidature').offsetTop, behavior: 'smooth' });
+  }
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.service-card, .step, .stat, .contact-card').forEach(function(el) {
+    el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; observer.observe(el);
+  });
+</script>
+</body>
+</html>
