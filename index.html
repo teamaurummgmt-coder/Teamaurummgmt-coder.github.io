@@ -162,10 +162,10 @@
       <div class="form-grid">
         <div class="form-group"><label class="form-label">Prenom *</label><input type="text" class="form-input" id="prenom" placeholder="Ton prenom"></div>
         <div class="form-group"><label class="form-label">Age *</label><input type="number" class="form-input" id="age" placeholder="Ton age" min="18"></div>
-        <div class="form-group full"><label class="form-label">Plateforme(s) utilisee(s) *</label><div class="checkbox-group"><label class="checkbox-item"><input type="checkbox" value="OnlyFans"><span class="checkbox-label">OnlyFans</span></label><label class="checkbox-item"><input type="checkbox" value="MYM"><span class="checkbox-label">MYM</span></label><label class="checkbox-item"><input type="checkbox" value="Fansly"><span class="checkbox-label">Fansly</span></label><label class="checkbox-item"><input type="checkbox" value="Aucun"><span class="checkbox-label">Pas encore de compte</span></label></div></div>
+        <div class="form-group full"><label class="form-label">Plateforme(s) utilisee(s) *</label><div class="checkbox-group"><label class="checkbox-item"><input type="checkbox" value="OnlyFans" class="plat"><span class="checkbox-label">OnlyFans</span></label><label class="checkbox-item"><input type="checkbox" value="MYM" class="plat"><span class="checkbox-label">MYM</span></label><label class="checkbox-item"><input type="checkbox" value="Fansly" class="plat"><span class="checkbox-label">Fansly</span></label><label class="checkbox-item"><input type="checkbox" value="Aucun" class="plat"><span class="checkbox-label">Pas encore de compte</span></label></div></div>
         <div class="form-group"><label class="form-label">Chiffre d'affaires actuel</label><select class="form-select" id="ca"><option value="" disabled selected>Selectionne une tranche</option><option>Pas encore de revenus</option><option>Moins de 500 euros/mois</option><option>500 - 1000 euros/mois</option><option>1000 - 3000 euros/mois</option><option>3000 - 5000 euros/mois</option><option>Plus de 5000 euros/mois</option></select></div>
         <div class="form-group"><label class="form-label">Anciennete sur la plateforme</label><select class="form-select" id="anciennete"><option value="" disabled selected>Depuis combien de temps ?</option><option>Je demarre</option><option>Moins de 3 mois</option><option>3 a 6 mois</option><option>6 mois a 1 an</option><option>Plus d'1 an</option></select></div>
-        <div class="form-group full"><label class="form-label">Reseaux sociaux disponibles *</label><div class="checkbox-group"><label class="checkbox-item"><input type="checkbox" value="Twitter/X"><span class="checkbox-label">Twitter / X</span></label><label class="checkbox-item"><input type="checkbox" value="TikTok"><span class="checkbox-label">TikTok</span></label><label class="checkbox-item"><input type="checkbox" value="Instagram"><span class="checkbox-label">Instagram</span></label><label class="checkbox-item"><input type="checkbox" value="Snapchat"><span class="checkbox-label">Snapchat</span></label><label class="checkbox-item"><input type="checkbox" value="Reddit"><span class="checkbox-label">Reddit</span></label><label class="checkbox-item"><input type="checkbox" value="Aucun"><span class="checkbox-label">Aucun</span></label></div></div>
+        <div class="form-group full"><label class="form-label">Reseaux sociaux disponibles *</label><div class="checkbox-group"><label class="checkbox-item"><input type="checkbox" value="Twitter/X" class="reseau"><span class="checkbox-label">Twitter / X</span></label><label class="checkbox-item"><input type="checkbox" value="TikTok" class="reseau"><span class="checkbox-label">TikTok</span></label><label class="checkbox-item"><input type="checkbox" value="Instagram" class="reseau"><span class="checkbox-label">Instagram</span></label><label class="checkbox-item"><input type="checkbox" value="Snapchat" class="reseau"><span class="checkbox-label">Snapchat</span></label><label class="checkbox-item"><input type="checkbox" value="Reddit" class="reseau"><span class="checkbox-label">Reddit</span></label><label class="checkbox-item"><input type="checkbox" value="Aucun" class="reseau"><span class="checkbox-label">Aucun</span></label></div></div>
         <div class="form-group"><label class="form-label">Type de telephone *</label><select class="form-select" id="telephone"><option value="" disabled selected>Ton appareil</option><option>iPhone</option><option>Android</option><option>Les deux</option></select></div>
         <div class="form-group"><label class="form-label">Disponibilite par semaine *</label><select class="form-select" id="dispo"><option value="" disabled selected>Combien d'heures ?</option><option>Moins de 10h/semaine</option><option>10 a 20h/semaine</option><option>20 a 30h/semaine</option><option>Plus de 30h/semaine</option><option>Disponible a temps plein</option></select></div>
         <div class="form-group full"><label class="form-label">Objectif de revenus mensuel</label><select class="form-select" id="objectif"><option value="" disabled selected>Ton objectif</option><option>1000 euros/mois</option><option>2000 - 5000 euros/mois</option><option>5000 - 10000 euros/mois</option><option>Plus de 10000 euros/mois</option></select></div>
@@ -203,10 +203,39 @@
   function submitForm() {
     var prenom = document.getElementById('prenom').value.trim();
     var telegram = document.getElementById('telegram').value.trim();
-    if (!prenom || !telegram) { alert('Merci de remplir au minimum ton prenom et ton Telegram.'); return; }
-    document.getElementById('formContainer').style.display = 'none';
-    document.getElementById('successMsg').classList.add('show');
-    window.scrollTo({ top: document.getElementById('candidature').offsetTop, behavior: 'smooth' });
+    if (!prenom || !telegram) { alert('Merci de remplir ton prenom et ton Telegram.'); return; }
+    var plateformes = [];
+    document.querySelectorAll('.plat:checked').forEach(function(cb) { plateformes.push(cb.value); });
+    var reseaux = [];
+    document.querySelectorAll('.reseau:checked').forEach(function(cb) { reseaux.push(cb.value); });
+    var data = {
+      prenom: prenom,
+      age: document.getElementById('age').value,
+      plateformes: plateformes.join(', '),
+      ca: document.getElementById('ca').value,
+      anciennete: document.getElementById('anciennete').value,
+      reseaux: reseaux.join(', '),
+      telephone: document.getElementById('telephone').value,
+      disponibilite: document.getElementById('dispo').value,
+      objectif: document.getElementById('objectif').value,
+      telegram: telegram,
+      message: document.getElementById('message').value
+    };
+    fetch('https://formspree.io/f/mykozywe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function(r) {
+      if (r.ok) {
+        document.getElementById('formContainer').style.display = 'none';
+        document.getElementById('successMsg').classList.add('show');
+        window.scrollTo({ top: document.getElementById('candidature').offsetTop, behavior: 'smooth' });
+      } else {
+        alert('Erreur. Contacte-nous directement sur Telegram.');
+      }
+    }).catch(function() {
+      alert('Erreur. Contacte-nous directement sur Telegram.');
+    });
   }
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; } });
